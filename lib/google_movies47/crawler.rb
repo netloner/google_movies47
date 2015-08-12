@@ -22,8 +22,6 @@ module GoogleMovies47
       search_url = "http://www.google.com/movies?hl=#{language}" \
                     "&near=#{options[:city]}%2C+#{options[:state]}&date=#{days_ahead}"
 
-      puts  search_url
-
       @agent = Mechanize.new
       page = @agent.get(search_url)
       
