@@ -22,16 +22,20 @@ module GoogleMovies47
       y = 0
       theater_elements.each do |t|
         theater_name = t.search(".//h2[@class='name']/a/text()").text
+        theater_link = t.search(".//h2[@class='name']/a").attr('href').value
+        theater_id   = CGI::parse(theater_link)["tid"][0] rescue nil
         theater_info = t.search(".//div[@class='info']/text()").text
         showtimes = []
         movie_elements = t.search(".//div[@class='showtimes']//div[@class='movie']")
         
         movie_elements.each do |m|
           movie_name = m.search(".//div[@class='name']/a/text()").text.strip
+          movie_link = m.search(".//div[@class='name']/a").attr('href').value
+          movie_id   = CGI::parse(movie_link)["mid"][0] rescue nil
           movie_info_line = m.search(".//span[@class='info']/text()").text
           movie_info = parse_movie_info(movie_info_line)
           
-          @movies[movie_name] = { :name => movie_name, :info => movie_info } if @movies[movie_name].nil?
+          @movies[movie_name] = { :mid => movie_id, :name => movie_name, :info => movie_info } if @movies[movie_name].nil?
           
           movie_times = m.search(".//div[@class='times']/span/text()")
           times = []
@@ -40,10 +44,10 @@ module GoogleMovies47
             times << time
           end
           
-          showtimes << { :name => movie_name, :language => movie_info[:language], :times => times }
+          showtimes << { :mid => movie_id, :name => movie_name, :language => movie_info[:language], :times => times }
         end
         
-        @theaters[y] = { :name => theater_name, :info => theater_info, :movies => showtimes }
+        @theaters[y] = { :tid => theater_id, :name => theater_name, :info => theater_info, :movies => showtimes }
         y = y + 1
       end
       
