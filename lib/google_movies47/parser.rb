@@ -11,7 +11,7 @@ module GoogleMovies47
       @language = language
       @language_parser = GoogleMovies47::LanguageParser.new(language)
       @genre_parser = GoogleMovies47::GenreParser.new(language)
-      @theaters = Hash.new
+      @theaters = []
       @movies = Hash.new
     end
     
@@ -19,7 +19,6 @@ module GoogleMovies47
       theater_elements = doc.xpath(
       "//div[@class='movie_results']/div[@class='theater' and .//h2/a]"
       )
-      y = 0
       theater_elements.each do |t|
         theater_name = t.search(".//h2[@class='name']/a/text()").text
         theater_link = t.search(".//h2[@class='name']/a").attr('href').value
@@ -47,8 +46,7 @@ module GoogleMovies47
           showtimes << { :mid => movie_id, :name => movie_name, :language => movie_info[:language], :times => times }
         end
         
-        @theaters[y] = { :tid => theater_id, :name => theater_name, :info => theater_info, :movies => showtimes }
-        y = y + 1
+        @theaters << { :tid => theater_id, :name => theater_name, :info => theater_info, :movies => showtimes }
       end
       
     end
