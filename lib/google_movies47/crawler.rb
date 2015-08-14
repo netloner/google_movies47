@@ -15,7 +15,7 @@ module GoogleMovies47
       language = options[:language] || 'en'
       
       days_ahead = options[:days_ahead] || 0
-      raise WrongDaysAheadArgument if !days_ahead.kind_of? Integer or 0 >= days_ahead
+      raise WrongDaysAheadArgument if !days_ahead.kind_of? Integer or 0 > days_ahead
       
       @parser = GoogleMovies47::Parser.new(language)
       
