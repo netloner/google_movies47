@@ -10,7 +10,7 @@ module GoogleMovies47
     
     def initialize(options = {})
       
-      raise MissingLocationArgument unless options[:city] and options[:state]
+      raise MissingLocationArgument unless options[:city]
       
       language = options[:language] || 'en'
       
@@ -20,7 +20,7 @@ module GoogleMovies47
       @parser = GoogleMovies47::Parser.new(language)
       
       search_url = "http://www.google.com/movies?hl=#{language}" \
-                    "&near=#{options[:city]}%2C+#{options[:state]}&date=#{days_ahead}"
+                    "&near=#{options[:city]}&date=#{days_ahead}"
 
       @agent = Mechanize.new
       page = @agent.get(search_url)
