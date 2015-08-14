@@ -17,11 +17,11 @@ module GoogleMovies47
     
     def parse_show_times(doc)
       theater_elements = doc.xpath(
-      "//div[@class='movie_results']/div[@class='theater' and .//h2/a]"
+      "//div[@class='movie_results']/div[@class='theater' and .//h2]"
       )
       theater_elements.each do |t|
-        theater_name = t.search(".//h2[@class='name']/a/text()").text
-        theater_link = t.search(".//h2[@class='name']/a").attr('href').value
+        theater_name = t.search(".//h2[@class='name']/text()").text
+        theater_link = t.search(".//h2[@class='name']/a").attr('href').value rescue nil
         theater_id   = CGI::parse(theater_link)["tid"][0] rescue nil
         theater_info = t.search(".//div[@class='info']/text()").text
         showtimes = []
